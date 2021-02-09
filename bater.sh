@@ -20,7 +20,7 @@ function heat_on(){
 		mosquitto_pub -h 192.168.0.249 -t home/f0/mysgw-sub/10/0/1/0/48 -m 16
 		h_state="up"
 		echo $h_state > ~/scripts/bater/heating_state
-		echo -e "$(printf '%(%d-%m-%y %H:%M:%S)T\n') C state:${h_state}\tmode:${t_mode}\tsp:${t_sp}\tair:${t_air}" >> ~/scripts/bater/heating.log
+		echo -e "$(printf '%(%d-%m %H:%M:%S)T\n') C state:${h_state}\tmode:${t_mode}\tsp:${t_sp}\tair:${t_air}" >> ~/scripts/bater/heating.log
 	fi
 }
 
@@ -32,7 +32,7 @@ function heat_off(){
 		mosquitto_pub -h 192.168.0.249 -t home/f0/mysgw-sub/10/0/1/0/48 -m -15
 		h_state="dn"
 		echo $h_state > ~/scripts/bater/heating_state
-		echo -e "$(printf '%(%d-%m-%y %H:%M:%S)T\n') C state:${h_state}\tmode:${t_mode}\tsp:${t_sp}\tair:${t_air}" >> ~/scripts/bater/heating.log
+		echo -e "$(printf '%(%d-%m %H:%M:%S)T\n') C state:${h_state}\tmode:${t_mode}\tsp:${t_sp}\tair:${t_air}" >> ~/scripts/bater/heating.log
 	fi
 }
 
@@ -44,7 +44,7 @@ t_sp=${t_ui[1]}
 t_air_float=$(mosquitto_sub -C 1 -h 192.168.0.249 -t home/f0/sr/thermostat/stat/temperature)
 t_air=${t_air_float%.*}
 
-echo -e "$(printf '%(%d-%m-%y %H:%M:%S)T\n') I state:${h_state}\tmode:${t_mode}\tsp:${t_sp}\tair:${t_air}" >> ~/scripts/bater/heating.log
+echo -e "$(printf '%(%d-%m %H:%M:%S)T\n') I state:${h_state}\tmode:${t_mode}\tsp:${t_sp}\tair:${t_air}" >> ~/scripts/bater/heating.log
 
 case $t_mode in
     "off")
