@@ -48,7 +48,7 @@ t_sp_max=$(echo "$t_sp + .5" | bc)
 t_air=$(mosquitto_sub -C 1 -h 192.168.0.249 -t home/f0/sr/thermostat/stat/temperature)
 t_floor=$(mosquitto_sub -C 1 -h 192.168.0.249 -t home/f0/sr/thermostat/stat/floorTemperature)
 
-if (( $(echo "$t_flor >= 33 | bc) ))
+if (( $(echo "$t_floor >= 33" | bc) ))
 then
 	toh=true
 else
