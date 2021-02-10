@@ -1,12 +1,12 @@
 #!/bin/bash
 
 function auto(){
-	if (( $(echo "$t_air < $t_sp" | bc) ))
+	if (( $(echo "$t_air <= $t_sp_min" | bc) ))
 	then
 		heat_on
 	fi
 
-	if (( $(echo "$t_air >= $t_sp" | bc) ))
+	if (( $(echo "$t_air >= $t_sp_max" | bc) ))
 	then
 		heat_off
 	fi
@@ -15,6 +15,7 @@ function auto(){
 function heat_on(){
 	if [ ! $h_state == "up" ]
 	then
+		#mosquitto_pub -h 192.168.0.249 -t home/f0/tr/lights/cmnd/POWER1 -m ON
 		mosquitto_pub -h 192.168.0.249 -t home/f0/mysgw-sub/10/0/1/0/48 -m 15
 		sleep 5
 		mosquitto_pub -h 192.168.0.249 -t home/f0/mysgw-sub/10/0/1/0/48 -m 16
@@ -27,6 +28,7 @@ function heat_on(){
 function heat_off(){
 	if [ ! $h_state == "dn" ]
 	then
+		mosquitto_pub -h 192.168.0.249 -t home/f0/tr/lights/cmnd/POWER1 -m OFF
 		mosquitto_pub -h 192.168.0.249 -t home/f0/mysgw-sub/10/0/1/0/48 -m -16
 		sleep 45
 		mosquitto_pub -h 192.168.0.249 -t home/f0/mysgw-sub/10/0/1/0/48 -m -15
@@ -41,8 +43,9 @@ t_ui=($(cat ~/scripts/bater/thermostat_state))
 h_state=$(cat ~/scripts/bater/heating_state)
 t_mode=${t_ui[0]}
 t_sp=${t_ui[1]}
-t_air_float=$(mosquitto_sub -C 1 -h 192.168.0.249 -t home/f0/sr/thermostat/stat/temperature)
-t_air=${t_air_float%.*}
+t_sp_min=$(echo "$t_sp - .5" | bc)
+t_sp_max=$(echo "$t_sp + .5" | bc)
+t_air=$(mosquitto_sub -C 1 -h 192.168.0.249 -t home/f0/sr/thermostat/stat/temperature)
 
 echo -e "$(printf '%(%d-%m %H:%M:%S)T\n') I state:${h_state}\tmode:${t_mode}\tsp:${t_sp}\tair:${t_air}" >> ~/scripts/bater/heating.log
 
