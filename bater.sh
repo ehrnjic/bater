@@ -28,7 +28,7 @@ function heat_on(){
 function heat_off(){
 	if [ ! $h_state == "dn" ]
 	then
-		mosquitto_pub -h 192.168.0.249 -t home/f0/tr/lights/cmnd/POWER1 -m OFF
+		#mosquitto_pub -h 192.168.0.249 -t home/f0/tr/lights/cmnd/POWER1 -m OFF
 		mosquitto_pub -h 192.168.0.249 -t home/f0/mysgw-sub/10/0/1/0/48 -m -16
 		sleep 45
 		mosquitto_pub -h 192.168.0.249 -t home/f0/mysgw-sub/10/0/1/0/48 -m -15
