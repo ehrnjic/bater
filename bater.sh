@@ -21,7 +21,7 @@ function heat_on(){
 		mosquitto_pub -h 192.168.0.249 -t home/f0/mysgw-sub/10/0/1/0/48 -m 16
 		h_state="up"
 		echo $h_state > ~/scripts/bater/heating_state
-		echo -e "$(printf '%(%d-%m %H:%M:%S)T\n') C state:${h_state}\tmode:${t_mode}\tsp:${t_sp}\tair:${t_air}\floor:${t_flor}\ttoh:${toh}" >> ~/scripts/bater/heating.log
+		echo -e "$(printf '%(%d-%m %H:%M:%S)T\n') C state:${h_state}\tmode:${t_mode}\tsp:${t_sp}\tair:${t_air}\tfloor:${t_flor}\ttoh:${toh}" >> ~/scripts/bater/heating.log
 	fi
 }
 
@@ -34,7 +34,7 @@ function heat_off(){
 		mosquitto_pub -h 192.168.0.249 -t home/f0/mysgw-sub/10/0/1/0/48 -m -15
 		h_state="dn"
 		echo $h_state > ~/scripts/bater/heating_state
-		echo -e "$(printf '%(%d-%m %H:%M:%S)T\n') C state:${h_state}\tmode:${t_mode}\tsp:${t_sp}\tair:${t_air}\floor:${t_flor}\ttoh:${toh}" >> ~/scripts/bater/heating.log
+		echo -e "$(printf '%(%d-%m %H:%M:%S)T\n') C state:${h_state}\tmode:${t_mode}\tsp:${t_sp}\tair:${t_air}\tfloor:${t_flor}\ttoh:${toh}" >> ~/scripts/bater/heating.log
 	fi
 }
 
@@ -55,7 +55,7 @@ else
 	toh=false
 fi
 
-echo -e "$(printf '%(%d-%m %H:%M:%S)T\n') I state:${h_state}\tmode:${t_mode}\tsp:${t_sp}\tair:${t_air}\floor:${t_flor}\ttoh:${toh}" >> ~/scripts/bater/heating.log
+echo -e "$(printf '%(%d-%m %H:%M:%S)T\n') I state:${h_state}\tmode:${t_mode}\tsp:${t_sp}\tair:${t_air}\tfloor:${t_flor}\ttoh:${toh}" >> ~/scripts/bater/heating.log
 
 case $t_mode in
     "off")
